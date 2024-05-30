@@ -1,12 +1,12 @@
 const mysql = require("mysql");
 
 const Connection = mysql.createConnection({
-  host: process.env.HOST,
-  user: process.env.USER_NAME,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE_NAME,
+  host: "localhost",
+  user: "test",
+  password: "test",
+  database: "bidding_platform",
+  port: 3306,
 });
-
 
 Connection.connect((err) => {
   if (err) {

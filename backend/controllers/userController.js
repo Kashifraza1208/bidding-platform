@@ -35,6 +35,8 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     [username, hashedPassword, email],
     (error, result) => {
       if (error) {
+        console.log(error);
+        res.status(501).json({ message: error.message });
       } else {
         const userId = result.insertId;
 
@@ -46,11 +48,10 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
         );
 
         Connection.commit();
+        res.status(201).json({ message: "User registered successfully" });
       }
     }
   );
-
-  res.status(201).json({ message: "User registered successfully" });
 });
 //Login User
 
@@ -95,8 +96,7 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
     [userId],
     (error, results) => {
       if (error) {
-        console.error("Error fetching user profile:", error);
-        return next(new ErrorHandler("Database error", 500));
+        return next(new ErrorHandler("Internal server error", 500));
       }
 
       if (results.length === 0) {

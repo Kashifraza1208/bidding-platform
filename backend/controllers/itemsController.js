@@ -43,7 +43,6 @@ function checkFileType(file, cb) {
   }
 }
 
-
 //create auction items
 exports.createItem = catchAsyncErrors(async (req, res, next) => {
   upload(req, res, async (err) => {
@@ -56,13 +55,13 @@ exports.createItem = catchAsyncErrors(async (req, res, next) => {
 
     const image_url = req.file ? req.file.path : null;
 
-
     // Insert item into database
     Connection.query(
       "INSERT INTO items (name, description, starting_price, current_price, image_url, end_time) VALUES (?, ?, ?, ?, ?, ?)",
       [name, description, starting_price, current_price, image_url, end_time],
       (error, result) => {
         if (error) {
+          console.log(error.message);
           return next(new ErrorHandler("Internal Server Error", 500));
         } else {
           res.status(201).json({ message: "Item created successfully" });
@@ -79,7 +78,6 @@ exports.getItems = catchAsyncErrors(async (req, res, next) => {
     .search()
     .filter()
     .pagination(4);
-
 
   Connection.query(apiFeatures.query, (error, results) => {
     if (error) {
